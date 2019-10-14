@@ -1,8 +1,9 @@
 Rails.application.routes.draw do
-   # Api definition
+
+  # API Routing for V1
   namespace :api, defaults: { format: :json } do
     namespace :v1 do
-      resources :users
+      resources :users, only: [:show, :create, :update, :destroy]
     end
   end
 

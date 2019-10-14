@@ -11,6 +11,7 @@ class User < ApplicationRecord
 
 
   ## MODEL HELPERS
+  has_secure_password
 
 
   # MODEL VALIDATIONS

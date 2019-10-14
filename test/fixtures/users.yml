@@ -5,3 +5,9 @@ one:
   username: test
   email: test@email.com
   password_digest: test_password_hash
+
+two:
+  name: Tara
+  username: tara
+  email: tara@email.com
+  password_digest: test_password_hash
