@@ -4,10 +4,10 @@ one:
   name: Test User
   username: test
   email: test@email.com
-  password_digest: test_password_hash
+  password_digest: <%= BCrypt::Password.create('true_pass') %>
 
 two:
   name: Tara
   username: tara
   email: tara@email.com
-  password_digest: test_password_hash
+  password_digest: <%= BCrypt::Password.create('good_pass') %>
