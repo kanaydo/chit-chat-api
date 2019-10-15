@@ -1,10 +1,13 @@
 class Api::V1::UsersController < ApplicationController
 
+  before_action :set_user, only: [:show, :update, :destroy]
+
+  # show user
   def show
-    user = User.find params[:id]
-    render json: user, status: :ok
+    render json: @user, status: :ok
   end
   
+  # create new user
   def create
     user = User.new user_params
     if user.save
@@ -14,21 +17,21 @@ class Api::V1::UsersController < ApplicationController
     end
   end
 
+  # update user information
   def update
-    user = User.find params[:id]
-    if user.update user_params
-      render json: user, status: :ok
+    if @user.update user_params
+      render json: @user, status: :ok
     else
-      render json: user.errors, status: :not_modified 
+      render json: @user.errors, status: :not_modified 
     end
   end
 
+  # delete user
   def destroy
-    user = User.find params[:id]
-    if user.destroy
-      render json: user, status: :no_content
+    if @user.destroy
+      head :no_content
     else
-      render json: user.errors, status: :not_modified
+      render json: @user.errors, status: :not_modified
     end
   end
 
@@ -41,6 +44,11 @@ class Api::V1::UsersController < ApplicationController
       :email,
       :password
     )
+  end
+
+  # set current user to specific action
+  def set_user
+    @user = User.find params[:id]
   end
 
 end
