@@ -1,9 +1,13 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  user_one_id: 1
-  user_two_id: 2
+  user_one_id: one
+  user_two_id: two
 
 two:
-  user_one_id: 1
-  user_two_id: 2
+  user_one_id: two
+  user_two_id: one
+
+oppung_chat:
+  user_one_id: oppung
+  user_two_id: one

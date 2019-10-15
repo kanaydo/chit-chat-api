@@ -9,6 +9,7 @@ class User < ApplicationRecord
 
   ## RELATIONSHIP:
   has_many :conversations, class_name: 'Conversation', foreign_key: 'user_one_id', dependent: :destroy
+  has_many :messages, dependent: :destroy
 
 
   ## MODEL HELPERS

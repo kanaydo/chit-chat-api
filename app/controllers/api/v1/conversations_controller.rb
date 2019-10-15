@@ -1,7 +1,9 @@
 class Api::V1::ConversationsController < ApplicationController
 
-  before_action :set_sender, only: [:index, :create]
-  before_action :check_sender, only: [:index, :create]
+  before_action :set_owner, only: [:index, :create]
+  before_action :set_sender, only: [:add_message]
+  before_action :set_conversation, only: [:add_message]
+  before_action :check_sender, only: [:index, :create, :add_message]
 
   def index
   
@@ -16,6 +18,15 @@ class Api::V1::ConversationsController < ApplicationController
     end
   end
 
+  def add_message
+    message = @conversation.messages.new message_params
+    if message.save
+      render json: message, status: :created
+    else
+      render json: message.errors, status: :unprocessable_entity
+    end
+  end
+
   private
   def conversation_params
     params.require(:conversation).permit(
@@ -24,9 +35,25 @@ class Api::V1::ConversationsController < ApplicationController
     )
   end
 
+  def message_params
+    params.require(:message).permit(
+      :user_id,
+      :content
+    )
+  end
+
+  def set_conversation
+    @conversation = Conversation.find params[:id]
+  end
+
   # set current user to specific action
-  def set_sender
+  def set_owner
     @sender = User.find conversation_params[:user_one_id]
+  end
+
+  # set message sender
+  def set_sender
+    @sender = User.find message_params[:user_id]
   end
 
   # validate conversation owner

@@ -8,6 +8,7 @@ class Conversation < ApplicationRecord
   ## RELATIONSHIP:
   belongs_to :user_one, class_name: 'User', dependent: :destroy
   belongs_to :user_two, class_name: 'User', dependent: :destroy
+  has_many :messages, dependent: :destroy
 
   # MODEL VALIDATIONS
   validates :user_one_id,
