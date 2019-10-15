@@ -29,25 +29,32 @@ class Api::V1::UsersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should update user with' do
-    patch api_v1_user_url(@user), params: { user: { name: 'New Test', username: 'new_test', email: 'newtest@email.com', password: '123' } }, as: :json
+    patch api_v1_user_url(@user), params: { user: { name: 'New Test', username: 'new_test', email: 'newtest@email.com', password: '123' } }, headers: { Authorization: JsonWebToken.encode(user_id: @user.id) }, as: :json
     assert_response :ok
   end
 
   test 'should not update user if invalid' do
-    patch api_v1_user_url(@user), params: { user: { name: 'New Test', username: 'new test', email: 'newtestemail.com', password: '123' } }, as: :json
+    patch api_v1_user_url(@user), params: { user: { name: 'New Test', username: 'new test', email: 'newtestemail.com', password: '123' } }, headers: { Authorization: JsonWebToken.encode(user_id: @user.id) }, as: :json
     assert_response :not_modified
   end
 
   test 'should not update user if conflict' do
-    patch api_v1_user_url(@user), params: { user: { name: 'New Test', username: @new_user.username, email: 'test@email.com', password: '123' } }, as: :json
+    patch api_v1_user_url(@user), params: { user: { name: 'New Test', username: @new_user.username, email: 'test@email.com', password: '123' } }, headers: { Authorization: JsonWebToken.encode(user_id: @user.id) }, as: :json
     assert_response :not_modified
   end
 
   test 'should destroy user' do
     assert_difference('User.count', -1) do
-      delete api_v1_user_url(@user), as: :json
+      delete api_v1_user_url(@user), headers: { Authorization: JsonWebToken.encode(user_id: @user.id) }, as: :json
     end
     assert_response :no_content
+  end
+
+  test 'should not destroy user' do
+    assert_no_difference('User.count', -1) do
+      delete api_v1_user_url(@user), as: :json
+    end
+    assert_response :forbidden
   end
 
 end

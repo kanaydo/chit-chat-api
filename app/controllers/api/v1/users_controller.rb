@@ -1,6 +1,7 @@
 class Api::V1::UsersController < ApplicationController
 
   before_action :set_user, only: [:show, :update, :destroy]
+  before_action :check_user, only: [:update, :destroy]
 
   # show user
   def show
@@ -49,6 +50,11 @@ class Api::V1::UsersController < ApplicationController
   # set current user to specific action
   def set_user
     @user = User.find params[:id]
+  end
+
+  # validate user before run some action
+  def check_user
+    head :forbidden unless @user.id == current_user&.id
   end
 
 end
