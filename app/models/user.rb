@@ -8,6 +8,7 @@ class User < ApplicationRecord
 
 
   ## RELATIONSHIP:
+  has_many :conversations, class_name: 'Conversation', foreign_key: 'user_one_id', dependent: :destroy
 
 
   ## MODEL HELPERS
@@ -33,5 +34,8 @@ class User < ApplicationRecord
 
 
   # MODEL FUNCTION
+  def conversation_list
+    return self.conversations
+  end
 
 end
