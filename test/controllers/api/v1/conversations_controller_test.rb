@@ -31,4 +31,21 @@ class Api::V1::ConversationsControllerTest < ActionDispatch::IntegrationTest
     assert_equal 2, json_response.length
   end
 
+  test 'should add message to conversation' do
+    post add_message_api_v1_conversation_url(@conversation), params: { message: { user_id: @user.id, content: 'Test Message'} }, headers: { Authorization: JsonWebToken.encode(user_id: @user.id) }, as: :json
+    assert_response :created
+    json_response = JSON.parse(response.body)
+    assert_equal @user.id, json_response['user_id']
+  end
+
+  test 'should not add message to conversation if message content is blank' do
+    post add_message_api_v1_conversation_url(@conversation), params: { message: { user_id: @user.id } }, headers: { Authorization: JsonWebToken.encode(user_id: @user.id) }, as: :json
+    assert_response :unprocessable_entity
+  end
+
+  test 'should not add message to conversation if the user not validated' do
+    post add_message_api_v1_conversation_url(@conversation), params: { message: { user_id: @user.id, content: 'Test Message'} }, as: :json
+    assert_response :forbidden
+  end
+
 end
