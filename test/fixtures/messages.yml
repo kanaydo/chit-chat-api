@@ -1,11 +1,11 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 message_one:
-  conversation_id: oppung_chat
-  user_id: oppung
+  conversation: oppung_chat
+  user: oppung
   content: MyText
 
 message_two:
-  conversation_id: two
-  user_id: one
+  conversation: oppung_chat
+  user: oppung
   content: MyText

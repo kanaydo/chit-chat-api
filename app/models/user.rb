@@ -35,8 +35,10 @@ class User < ApplicationRecord
 
 
   # MODEL FUNCTION
+
+  # fetch all user conversations
   def conversation_list
-    return self.conversations
+    Conversation.user_conversation(self.id)
   end
 
 end

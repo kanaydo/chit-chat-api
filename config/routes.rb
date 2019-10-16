@@ -8,6 +8,7 @@ Rails.application.routes.draw do
       resources :conversations do
         member do
           post :add_message
+          get :messages
         end
       end
       resources :messages

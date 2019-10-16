@@ -17,3 +17,9 @@ oppung:
   username: oppung
   email: oppung@email.com
   password_digest: <%= BCrypt::Password.create('true_pass') %>
+
+bat:
+  name: bat
+  username: bat
+  email: bat@email.com
+  password_digest: <%= BCrypt::Password.create('true_pass') %>
