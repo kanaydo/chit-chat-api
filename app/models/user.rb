@@ -27,7 +27,7 @@ class User < ApplicationRecord
 
   validates :email,
     presence: { message: "must be filled!" },
-    uniqueness: { message: "this username already taken!" },
+    uniqueness: { message: "this email already used!" },
     format: { with: URI::MailTo::EMAIL_REGEXP, message: "email format must be valid!" }
 
   validates :password_digest,
