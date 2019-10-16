@@ -1,15 +1,24 @@
 class Api::V1::ConversationsController < ApplicationController
 
-  before_action :set_conversation_member, only: [:index, :show]
+  before_action :set_conversation_member, only: [:index, :show, :create]
   before_action :set_message_sender_as_conversation_member, only: [:add_message]
   before_action :set_conversation, only: [:show, :add_message]
-  before_action :check_conversation_member, only: [:index, :show, :add_message]
+  before_action :check_conversation_member, only: [:index, :show, :add_message, :create]
 
 
   # get all user conversations
   def index
     conversations = @member.conversation_list
     render json: conversations, status: :ok
+  end
+
+  def create
+    conversation = @member.conversations.new conversation_params
+    if conversation.save
+      render json: conversation, status: :created
+    else
+      render json: conversation.errors, status: :unprocessable_entity
+    end
   end
 
   # show conversation conversation messages
@@ -28,7 +37,14 @@ class Api::V1::ConversationsController < ApplicationController
     end
   end
 
+
   private
+  # handle conversation params
+  def conversation_params
+    params.require(:conversation).permit(
+      :user_two_id
+    )
+  end
 
   # handle the conversation message params
   def message_params
