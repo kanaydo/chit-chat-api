@@ -44,7 +44,8 @@ class User < ApplicationRecord
 
   def contact_list
     result = []
-    self.contacts.each do |contact|
+    contacts = Contact.where('user_id = ? or friend_id = ?', self.id, self.id)
+    contacts.each do |contact|
       conversation = Conversation.having_conversation?(contact.user_id, contact.friend_id)
       if conversation == nil
         new_contact = contact.attributes.merge(conversation: Conversation.new)

@@ -61,6 +61,10 @@ class Api::V1::UsersController < ApplicationController
     render json: users, status: :ok
   end
 
+  def check_contact
+    result = Contact.check_contact(params[:user_id], params[:id])
+    render json: { status: result }, status: :ok
+  end
 
   private
   # handle user params

@@ -9,6 +9,7 @@ Rails.application.routes.draw do
         member do
           post :add_to_contact
           get :contacts
+          get :check_contact
         end
         collection do
           get :search
