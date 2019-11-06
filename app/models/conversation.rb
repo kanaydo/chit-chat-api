@@ -6,8 +6,8 @@ class Conversation < ApplicationRecord
 
 
   ## RELATIONSHIP:
-  belongs_to :user_one, class_name: 'User', dependent: :destroy
-  belongs_to :user_two, class_name: 'User', dependent: :destroy
+  belongs_to :user_one, class_name: 'User'
+  belongs_to :user_two, class_name: 'User'
   has_many :messages, dependent: :destroy, foreign_key: 'conversation_id'
 
   # MODEL VALIDATIONS
