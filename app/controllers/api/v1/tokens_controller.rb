@@ -8,7 +8,10 @@ class Api::V1::TokensController < ApplicationController
         user: user
       }
     else
-      head :unauthorized
+      render json: {
+        token: nil,
+        user: User.new
+      }, status: :unauthorized
     end
   end
 

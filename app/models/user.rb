@@ -10,6 +10,7 @@ class User < ApplicationRecord
   ## RELATIONSHIP:
   has_many :conversations, class_name: 'Conversation', foreign_key: 'user_one_id', dependent: :destroy
   has_many :messages, dependent: :destroy
+  has_many :contacts, class_name: 'Contact', foreign_key: 'user_id', dependent: :destroy
 
 
   ## MODEL HELPERS
@@ -39,6 +40,24 @@ class User < ApplicationRecord
   # fetch all user conversations
   def conversation_list
     Conversation.user_conversation(self.id)
+  end
+
+  def contact_list
+    result = []
+    self.contacts.each do |contact|
+      conversation = Conversation.having_conversation?(contact.user_id, contact.friend_id)
+      if conversation == nil
+        new_contact = contact.attributes.merge(conversation: Conversation.new)
+      else
+        new_contact = contact.attributes.merge(conversation: conversation)
+      end
+      result << new_contact
+    end
+    return result
+  end
+
+  def self.search term
+    where('lower(name) LIKE lower(?) or lower(username) LIKE lower(?)', "%#{ term }%", "%#{ term }%")
   end
 
 end

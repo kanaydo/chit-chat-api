@@ -1,7 +1,9 @@
 class Api::V1::UsersController < ApplicationController
 
-  before_action :set_user, only: [:show, :update, :destroy]
-  before_action :check_user, only: [:update, :destroy]
+  before_action :set_user, only: [:show, :update, :destroy, :contacts]
+  before_action :check_user, only: [:update, :destroy, :contacts] 
+  before_action :set_contact_owner, only: [:add_to_contact]
+  before_action :validate_owner, only: [:add_to_contact]
 
   # show user
   def show
@@ -36,6 +38,29 @@ class Api::V1::UsersController < ApplicationController
     end
   end
 
+  def contacts
+    contacts = @user.contact_list
+    render json: contacts, status: :ok
+  end
+
+  def add_to_contact
+    contact = @owner.contacts.new(friend_id: params[:id])
+    if contact.save
+      render json: contact, status: :created
+    else
+      render json: contact.errors, status: :unprocessable_entity
+    end
+  end
+
+  def search
+    term = params[:keyword]
+    if term
+      users = User.search(params[:keyword])
+    else
+    end
+    render json: users, status: :ok
+  end
+
 
   private
   # handle user params
@@ -48,6 +73,17 @@ class Api::V1::UsersController < ApplicationController
     )
   end
 
+  #handle contact params
+  def contact_params
+    params.require(:contact).permit(
+      :user_id
+    )
+  end
+
+  def set_contact_owner
+    @owner = User.find contact_params[:user_id]
+  end
+
   # set current user to specific action
   def set_user
     @user = User.find params[:id]
@@ -57,5 +93,10 @@ class Api::V1::UsersController < ApplicationController
   def check_user
     head :forbidden unless @user.id == current_user&.id
   end
+  
+  def validate_owner
+    head :forbidden unless @owner.id == current_user&.id
+  end
+
 
 end

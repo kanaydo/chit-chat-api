@@ -25,4 +25,8 @@ class Conversation < ApplicationRecord
     self.where(user_one_id: user_id).or(self.where(user_two_id: user_id))
   end
 
+  def self.having_conversation?(user_id, friend_id)
+    self.find_by('user_one_id = ? AND user_two_id = ? OR user_one_id = ? AND user_two_id = ?', user_id, friend_id, friend_id, user_id)
+  end
+
 end

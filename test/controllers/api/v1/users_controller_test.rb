@@ -57,4 +57,18 @@ class Api::V1::UsersControllerTest < ActionDispatch::IntegrationTest
     assert_response :forbidden
   end
 
+  test 'should add user to contact' do
+    assert_difference('Contact.count') do
+      post add_to_contact_api_v1_user_url(@new_user), params: { contact: { user_id: @user.id } }, headers: { Authorization: JsonWebToken.encode(user_id: @user.id) }, as: :json
+    end
+    assert_response :created
+  end
+
+  test 'should not add user to contact if not validated' do
+    assert_no_difference('Contact.count') do
+      post add_to_contact_api_v1_user_url(@new_user), params: { contact: { user_id: @user.id } }, as: :json
+    end
+    assert_response :forbidden
+  end
+
 end

@@ -11,8 +11,8 @@ class Message < ApplicationRecord
 
 
   ## RELATIONSHIP:
-  belongs_to :user, dependent: :destroy
-  belongs_to :conversation, dependent: :destroy
+  belongs_to :user
+  belongs_to :conversation
 
 
   ## MODEL VALIDATION
@@ -28,7 +28,7 @@ class Message < ApplicationRecord
   
   # send message notification after new message created
   def send_message_notification
-    ActionCable.server.broadcast "conversation_#{ self.conversation_id }_#{ self.user_id }_notification_channel", message: self
+    ActionCable.server.broadcast "conversation_#{ self.conversation_id }_notification_channel", self
   end
 
 
