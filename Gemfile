@@ -10,6 +10,7 @@ gem 'bcrypt', '~> 3.1.7'
 gem 'jwt', '~> 2.2'
 gem 'bootsnap', '>= 1.4.2', require: false
 gem 'redis', '~> 3.3', '>= 3.3.1'
+gem "paperclip", "~> 6.0.0"
 
 
 group :development, :test do

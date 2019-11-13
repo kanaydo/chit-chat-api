@@ -7,7 +7,8 @@ class Api::V1::UsersController < ApplicationController
 
   # show user
   def show
-    render json: @user, status: :ok
+    user = @user.attributes.merge(avatar: @user.avatar.url(:medium))
+    render json: user, status: :ok
   end
   
   # create new user
@@ -23,9 +24,11 @@ class Api::V1::UsersController < ApplicationController
   # update user information
   def update
     if @user.update user_params
-      render json: @user, status: :ok
+      user = @user.attributes.merge(avatar: @user.avatar.url(:medium))
+      render json: user, status: :ok
     else
-      render json: @user.errors, status: :not_modified 
+      render json: @user.errors, status: :unprocessable_entity 
+
     end
   end
 
@@ -73,7 +76,8 @@ class Api::V1::UsersController < ApplicationController
       :name,
       :username,
       :email,
-      :password
+      :password,
+      :avatar
     )
   end
 
