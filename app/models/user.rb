@@ -8,7 +8,8 @@ class User < ApplicationRecord
 
 
   ## RELATIONSHIP:
-  has_many :conversations, class_name: 'Conversation', foreign_key: 'user_one_id', dependent: :destroy
+  has_many :own_conversations, class_name: 'Conversation', foreign_key: 'user_one_id', dependent: :destroy
+  has_many :guest_conversations, class_name: 'Conversation', foreign_key: 'user_two_id', dependent: :destroy
   has_many :messages, dependent: :destroy
   has_many :contacts, class_name: 'Contact', foreign_key: 'user_id', dependent: :destroy
 
