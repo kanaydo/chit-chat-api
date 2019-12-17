@@ -140,5 +140,17 @@ RSpec.describe User, type: :model do
         expect(@four.contact_list.size).to eq(0)
       end
     end
+    context 'function search' do
+      it 'should return searched user' do
+        result_1 = User.search 'user'
+        expect(result_1.size).to eq(4)
+        result_2 = User.search 'one'
+        expect(result_2.size).to eq(1)
+        user_one = User.search 'user_one'
+        expect(user_one[0].username).to eq('user_one')
+        random_search = User.search 'user_t'
+        expect(random_search.size).to eq(2)
+      end
+    end
   end
 end
