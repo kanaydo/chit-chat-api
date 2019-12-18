@@ -23,3 +23,10 @@ four:
   username: user_four
   email: four@email.com
   password_digest: <%= BCrypt::Password.create('four_pass') %>
+
+five:
+  name: Five
+  username: five
+  email: five@email.com
+  password_digest: <%= BCrypt::Password.create('five_pass') %>
+
