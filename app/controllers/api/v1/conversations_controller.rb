@@ -13,7 +13,7 @@ class Api::V1::ConversationsController < ApplicationController
   end
 
   def create
-    conversation = @member.conversations.new conversation_params
+    conversation = @member.own_conversations.new conversation_params
     if conversation.save
       render json: conversation, status: :created
     else
