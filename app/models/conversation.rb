@@ -9,6 +9,7 @@ class Conversation < ApplicationRecord
   belongs_to :user_one, class_name: 'User'
   belongs_to :user_two, class_name: 'User'
   has_many :messages, dependent: :destroy, foreign_key: 'conversation_id'
+  after_create :notify_receiver
 
   # MODEL VALIDATIONS
   validates :user_one_id,
@@ -28,5 +29,11 @@ class Conversation < ApplicationRecord
   def self.having_conversation?(user_id, friend_id)
     self.find_by('user_one_id = ? AND user_two_id = ? OR user_one_id = ? AND user_two_id = ?', user_id, friend_id, friend_id, user_id)
   end
+
+  # send notification to user_two if he had a conversation
+  def notify_receiver
+    ActionCable.server.broadcast "user_#{ self.user_two_id }_notification_channel", self
+  end
+  
 
 end
