@@ -9,6 +9,12 @@ build using:
 ```
 
 ## Setup
+- installations:
+install [Ruby and Ruby on Rails](https://gorails.com/setup/ubuntu/18.04) by following the instructions.
+and install the redis-server:
+```
+sudo apt-get install redis-server
+```
 - clone:
 ```
 git clone https://github.com/kanaydo/chit-chat-api.git
