@@ -22,20 +22,20 @@ class User < ApplicationRecord
 
   # MODEL VALIDATIONS
   validates :name,
-    presence: { message: "must filled!" }
+    presence: { message: "Name must filled!" }
 
   validates :username,
-    presence: { message: "must filled!" },
-    uniqueness: { message: "this username already taken!" },
+    presence: { message: "Username must filled!" },
+    uniqueness: { message: "This username already taken!" },
     format: { without: /\s/ }
 
   validates :email,
-    presence: { message: "must be filled!" },
-    uniqueness: { message: "this email already used!" },
-    format: { with: URI::MailTo::EMAIL_REGEXP, message: "email format must be valid!" }
+    presence: { message: "Email must be filled!" },
+    uniqueness: { message: "This email already used!" },
+    format: { with: URI::MailTo::EMAIL_REGEXP, message: "Email format must be valid!" }
 
   validates :password_digest,
-    presence: { message: "must filled!" }
+    presence: { message: "Password must filled!" }
 
 
   # MODEL FUNCTION

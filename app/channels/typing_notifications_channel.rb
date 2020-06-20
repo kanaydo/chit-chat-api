@@ -6,4 +6,8 @@ class TypingNotificationsChannel < ApplicationCable::Channel
   def unsubscribed
   end
 
+  def typing(data)
+    ActionCable.server.broadcast "typing_#{ params[:conversation_id] }_#{ params[:user_id] }_notification_channel", typing: data['typing_status']
+  end
+
 end

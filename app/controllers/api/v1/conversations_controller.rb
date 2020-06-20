@@ -2,8 +2,8 @@ class Api::V1::ConversationsController < ApplicationController
 
   before_action :set_conversation_member, only: [:index, :create]
   before_action :set_message_sender_as_conversation_member, only: [:add_message]
-  before_action :set_conversation, only: [:show, :add_message, :last_message]
-  before_action :check_conversation_member, only: [:index, :create]
+  before_action :set_conversation, only: [:show, :add_message, :last_message, :messages]
+  # before_action :check_conversation_member, only: [:index, :create]
 
 
   # get all user conversations
@@ -23,6 +23,10 @@ class Api::V1::ConversationsController < ApplicationController
 
   # show conversation conversation messages
   def show
+    render json: @conversation, status: :ok
+  end
+
+  def messages
     messages = @conversation.messages.order('created_at desc')
     render json: messages, status: :ok
   end
