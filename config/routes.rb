@@ -15,7 +15,7 @@ Rails.application.routes.draw do
           get :search
         end
       end
-      resources :tokens, only: [:create]
+      resources :user_sessions, only: [:create]
       resources :conversations do
         member do
           post :add_message

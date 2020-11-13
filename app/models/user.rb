@@ -53,4 +53,8 @@ class User < ApplicationRecord
     where('lower(name) LIKE lower(?) or lower(username) LIKE lower(?)', "%#{ term }%", "%#{ term }%")
   end
 
+  def self.find_by_credential(credential)
+    where('username = ? or email = ?', credential, credential).first
+  end
+
 end

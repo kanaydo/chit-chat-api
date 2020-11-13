@@ -62,7 +62,6 @@ class Api::V1::UsersController < ApplicationController
   end
 
   private
-  # handle user params
   def user_params
     params.require(:user).permit(
       :name,
