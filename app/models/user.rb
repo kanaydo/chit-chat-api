@@ -1,9 +1,9 @@
 class User < ApplicationRecord
 
   ## ATTRIBUTES:
-  # - name:string 
-  # - username:string 
-  # - email:string 
+  # - name:string
+  # - username:string
+  # - email:string
   # - password_digest:string
 
 

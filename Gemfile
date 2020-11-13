@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '2.5.1'
+ruby '2.7.0'
 
 gem 'rails', '~> 6.0.0'
 gem 'pg', '>= 0.18', '< 2.0'
@@ -11,6 +11,7 @@ gem 'jwt', '~> 2.2'
 gem 'bootsnap', '>= 1.4.2', require: false
 gem 'redis', '~> 3.3', '>= 3.3.1'
 gem "paperclip", "~> 6.0.0"
+gem 'blueprinter'
 
 
 group :development, :test do
