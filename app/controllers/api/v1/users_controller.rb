@@ -1,44 +1,32 @@
 class Api::V1::UsersController < ApplicationController
 
-  before_action :set_user, only: [:show, :update, :destroy, :contacts]
-  before_action :check_user, only: [:update, :destroy, :contacts] 
-  before_action :set_contact_owner, only: [:add_to_contact]
-  before_action :validate_owner, only: [:add_to_contact]
+  before_action :set_user, only: [:show, :update, :destroy, :contacts, :add_to_contact]
 
-  # show user
   def show
-    user = @user.attributes.merge(avatar: @user.avatar.url(:medium))
+    user = UserBlueprint.render(@user)
     render json: user, status: :ok
   end
 
-  # create new user
   def create
-    user = User.new user_params
-    if user.save
-      render json: {
-        status_code: 200,
-        data: user
-      }, status: 200
-    else
-      render json: {
-        status_code: 422,
-        data: user.errors
-      }, status: 422
-    end
-  end
-
-  # update user information
-  def update
-    if @user.update user_params
-      user = @user.attributes.merge(avatar: @user.avatar.url(:medium))
+    @user = User.new user_params
+    if @user.save
+      user = UserBlueprint.render(@user)
       render json: user, status: :ok
     else
-      render json: @user.errors, status: :unprocessable_entity 
+      render json: @user.errors, status: :unprocessable_entity
+    end
+  end
+
+  def update
+    if @user.update user_params
+      user = UserBlueprint.render(@user)
+      render json: user, status: :ok
+    else
+      render json: @user.errors, status: :unprocessable_entity
 
     end
   end
 
-  # delete user
   def destroy
     if @user.destroy
       head :no_content
@@ -48,25 +36,23 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def contacts
-    contacts = @user.contact_list
+    contacts = ContactBlueprint.render(@user.contact_list, view: :normal)
     render json: contacts, status: :ok
   end
 
   def add_to_contact
-    contact = @owner.contacts.new(friend_id: params[:id])
-    if contact.save
+    @contact = @user.contacts.new(friend_id: params[:friend_id])
+    if @contact.save
+			contact = ContactBlueprint.render(@contact, view: :normal)
       render json: contact, status: :created
     else
-      render json: contact.errors, status: :unprocessable_entity
+      render json: contacterrors, status: :unprocessable_entity
     end
   end
 
   def search
-    term = params[:keyword]
-    if term
-      users = User.search(params[:keyword])
-    else
-    end
+    @users = User.search(params[:keyword])
+    users = UserBlueprint.render(@users)
     render json: users, status: :ok
   end
 
@@ -87,30 +73,8 @@ class Api::V1::UsersController < ApplicationController
     )
   end
 
-  #handle contact params
-  def contact_params
-    params.require(:contact).permit(
-      :user_id
-    )
-  end
-
-  def set_contact_owner
-    @owner = User.find contact_params[:user_id]
-  end
-
-  # set current user to specific action
   def set_user
     @user = User.find params[:id]
   end
-
-  # validate user before run some action
-  def check_user
-    head :forbidden unless @user.id == current_user&.id
-  end
-  
-  def validate_owner
-    head :forbidden unless @owner.id == current_user&.id
-  end
-
 
 end

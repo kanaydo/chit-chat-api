@@ -12,6 +12,7 @@ gem 'bootsnap', '>= 1.4.2', require: false
 gem 'redis', '~> 3.3', '>= 3.3.1'
 gem "paperclip", "~> 6.0.0"
 gem 'blueprinter'
+gem 'oj'
 
 
 group :development, :test do

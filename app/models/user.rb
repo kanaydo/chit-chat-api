@@ -46,18 +46,7 @@ class User < ApplicationRecord
   end
 
   def contact_list
-    result = []
-    contacts = Contact.where('user_id = ? or friend_id = ?', self.id, self.id)
-    self.contacts.each do |contact|
-      conversation = Conversation.having_conversation?(contact.user_id, contact.friend_id)
-      if conversation == nil
-        new_contact = contact.attributes.merge(conversation: Conversation.new)
-      else
-        new_contact = contact.attributes.merge(conversation: conversation)
-      end
-      result << new_contact
-    end
-    return result
+    Contact.where('user_id = ? or friend_id = ?', self.id, self.id)
   end
 
   def self.search term
