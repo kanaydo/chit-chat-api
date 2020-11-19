@@ -1,5 +1,5 @@
 class Conversation < ApplicationRecord
-  
+
   ## ATTRIBUTES:
   # user_one_id:references
   # user_two_id:references
@@ -34,6 +34,5 @@ class Conversation < ApplicationRecord
   def notify_receiver
     ActionCable.server.broadcast "user_#{ self.user_two_id }_notification_channel", self
   end
-  
 
 end

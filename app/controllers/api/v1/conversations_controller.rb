@@ -3,12 +3,14 @@ class Api::V1::ConversationsController < ApplicationController
   before_action :set_conversation_member, only: [:index, :create]
   before_action :set_message_sender_as_conversation_member, only: [:add_message]
   before_action :set_conversation, only: [:show, :add_message, :last_message, :messages]
-  # before_action :check_conversation_member, only: [:index, :create]
 
 
-  # get all user conversations
   def index
-    conversations = @member.conversation_list
+    conversations = ConversationBlueprint.render(
+      @user.conversation_list,
+      view: :normal,
+      root: :conversations
+    )
     render json: conversations, status: :ok
   end
 
@@ -21,7 +23,6 @@ class Api::V1::ConversationsController < ApplicationController
     end
   end
 
-  # show conversation conversation messages
   def show
     render json: @conversation, status: :ok
   end
@@ -31,7 +32,6 @@ class Api::V1::ConversationsController < ApplicationController
     render json: messages, status: :ok
   end
 
-  # add message to current conversation
   def add_message
     message = @conversation.messages.new message_params
     if message.save
@@ -48,14 +48,12 @@ class Api::V1::ConversationsController < ApplicationController
 
 
   private
-  # handle conversation params
   def conversation_params
     params.require(:conversation).permit(
       :user_two_id
     )
   end
 
-  # handle the conversation message params
   def message_params
     params.require(:message).permit(
       :user_id,
@@ -63,12 +61,13 @@ class Api::V1::ConversationsController < ApplicationController
     )
   end
 
-  # set conversation member by :user_id
   def set_conversation_member
-    @member = User.find params[:user_id]
+    @user = User.find params[:user_id] rescue nil
+    if @user.nil?
+      head :not_found
+    end
   end
 
-  # set the selected conversation by :id
   def set_conversation
     @conversation = Conversation.find params[:id]
   end

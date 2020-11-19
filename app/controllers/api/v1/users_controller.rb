@@ -18,6 +18,7 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def update
+    byebug
     if @user.update user_params
       user = UserBlueprint.render(@user)
       render json: user, status: :ok
@@ -68,7 +69,7 @@ class Api::V1::UsersController < ApplicationController
       :username,
       :email,
       :password,
-      :avatar
+      :image
     )
   end
 
