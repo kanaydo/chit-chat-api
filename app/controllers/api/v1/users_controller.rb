@@ -3,7 +3,7 @@ class Api::V1::UsersController < ApplicationController
   before_action :set_user, only: [:show, :update, :destroy, :contacts, :add_to_contact]
 
   def show
-    user = UserBlueprint.render(@user)
+    user = UserBlueprint.render(@user, root: :user)
     render json: user, status: :ok
   end
 
@@ -18,7 +18,6 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def update
-    byebug
     if @user.update user_params
       user = UserBlueprint.render(@user)
       render json: user, status: :ok
@@ -37,7 +36,7 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def contacts
-    contacts = ContactBlueprint.render(@user.contact_list, view: :normal)
+    contacts = ContactBlueprint.render(@user.contact_list, view: :normal, root: :contacts)
     render json: contacts, status: :ok
   end
 
@@ -53,7 +52,7 @@ class Api::V1::UsersController < ApplicationController
 
   def search
     @users = User.search(params[:keyword])
-    users = UserBlueprint.render(@users)
+    users = UserBlueprint.render(@users, root: :user)
     render json: users, status: :ok
   end
 

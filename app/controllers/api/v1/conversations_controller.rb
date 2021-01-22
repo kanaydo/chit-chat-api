@@ -15,7 +15,7 @@ class Api::V1::ConversationsController < ApplicationController
   end
 
   def create
-    conversation = @member.own_conversations.new conversation_params
+    conversation = @user.own_conversations.new conversation_params
     if conversation.save
       render json: conversation, status: :created
     else
@@ -28,14 +28,17 @@ class Api::V1::ConversationsController < ApplicationController
   end
 
   def messages
-    messages = @conversation.messages.order('created_at desc')
+    messages = MessageBlueprint.render(
+      @conversation.messages.order('created_at desc'),
+      root: :messages
+    )
     render json: messages, status: :ok
   end
 
   def add_message
     message = @conversation.messages.new message_params
     if message.save
-      render json: message, status: :created
+      render json: MessageBlueprint.render(message, root: :message), status: :created
     else
       render json: message.errors, status: :unprocessable_entity
     end

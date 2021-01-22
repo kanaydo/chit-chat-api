@@ -10,6 +10,7 @@ class Conversation < ApplicationRecord
   belongs_to :user_two, class_name: 'User'
   has_many :messages, dependent: :destroy, foreign_key: 'conversation_id'
   after_create :notify_receiver
+  validates_uniqueness_of :user_one_id, scope: :user_two_id
 
   # MODEL VALIDATIONS
   validates :user_one_id,
@@ -32,7 +33,8 @@ class Conversation < ApplicationRecord
 
   # send notification to user_two if he had a conversation
   def notify_receiver
-    ActionCable.server.broadcast "user_#{ self.user_two_id }_notification_channel", self
+    conversation = ConversationBlueprint.render_as_json(self, view: :normal)
+    ActionCable.server.broadcast "user_#{ self.user_two_id }_notification_channel", conversation
   end
 
 end

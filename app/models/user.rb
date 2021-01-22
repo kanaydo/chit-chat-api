@@ -46,11 +46,11 @@ class User < ApplicationRecord
   end
 
   def contact_list
-    Contact.where('user_id = ? or friend_id = ?', self.id, self.id)
+    Contact.where('user_id = ?', self.id)
   end
 
   def self.search term
-    where('lower(name) LIKE lower(?) or lower(username) LIKE lower(?)', "%#{ term }%", "%#{ term }%")
+    where('lower(name) LIKE lower(?) or lower(username) LIKE lower(?)', "%#{ term }%", "%#{ term }%").first
   end
 
   def self.find_by_credential(credential)
