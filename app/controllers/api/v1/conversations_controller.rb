@@ -60,7 +60,8 @@ class Api::V1::ConversationsController < ApplicationController
   def message_params
     params.require(:message).permit(
       :user_id,
-      :content
+      :content,
+      :picture
     )
   end
 

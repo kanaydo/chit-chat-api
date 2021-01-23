@@ -15,6 +15,8 @@ class Message < ApplicationRecord
   belongs_to :conversation
 
 
+  has_one_attached :picture
+
   ## MODEL VALIDATION
   validates :conversation_id,
     presence: { message: "must filled!" }
