@@ -105,7 +105,8 @@ GEM
       mimemagic (~> 0.3.0)
       terrapin (~> 0.6.0)
     pg (1.2.3)
-    puma (3.12.6)
+    puma (4.3.9)
+      nio4r (~> 2.0)
     racc (1.5.2)
     rack (2.2.3)
     rack-test (1.1.0)
@@ -198,7 +199,7 @@ DEPENDENCIES
   oj
   paperclip (~> 6.0.0)
   pg (>= 0.18, < 2.0)
-  puma (~> 3.12)
+  puma (~> 4.3)
   rails (~> 6.0.0)
   rails-controller-testing
   redis (~> 3.3, >= 3.3.1)
